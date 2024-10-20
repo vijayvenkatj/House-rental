@@ -3,7 +3,7 @@ import React from 'react';
 import axios from 'axios';
 import { fail, success } from '@/DBfunctions/Toasts';
 
-const Property = ({ image,location,price,area,bedrooms,description }: any) => {
+const Property = ({ name,image,location,price,area,bedrooms }: any) => {
   const handleAddtoWishlist = async() => {
     const res = await axios.post("/api/addwishlist",{
       image
@@ -26,8 +26,8 @@ const Property = ({ image,location,price,area,bedrooms,description }: any) => {
       <div className="w-1/2 pl-8 flex flex-col justify-between">
         
         <div>
-          <h3 className="text-xl text-gray-800 font-semibold">{location}</h3>
-          <p className="text-lg text-gray-600">{description}</p>
+          <h3 className="text-xl text-gray-800 font-semibold">{name}</h3>
+          <p className="text-lg text-gray-600">{location}</p>
         </div>
 
         <div className="mt-1">

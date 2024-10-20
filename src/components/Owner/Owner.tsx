@@ -153,12 +153,12 @@ const OwnerDashboard = () => {
             properties.map((property: any, index: number) => (
               <OwnerProperty
                 key={index}
+                name={property.property_name}
                 image={property.image}
                 location={property.address}
                 price={property.rent}
                 area={property.area}
                 bedrooms={property.bedrooms}
-                description={property.description}
               />
             ))
           )}

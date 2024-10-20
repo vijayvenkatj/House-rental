@@ -32,12 +32,12 @@ export default function Home() {
             {properties.map((property: propertyInterface, index: number) => (
               <Property 
               key={index}
+              name={property.property_name}
               image={property.image}
               location={property.address}
               price={property.rent}
               area={property.area}
               bedrooms={property.bedrooms}
-              description={property.description}
               />
             ))}
           </div>

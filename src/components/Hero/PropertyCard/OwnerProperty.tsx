@@ -3,7 +3,7 @@ import { useState } from "react";
 import { fail } from "@/DBfunctions/Toasts";
 import Image from "next/image";
 
-const OwnerProperty = ({ image, location, price, area, bedrooms, description }: any) => {
+const OwnerProperty = ({ name,image, location, price, area, bedrooms,}: any) => {
   const [showModal, setShowModal] = useState(false);
   const [buyerDetails, setBuyerDetails] = useState<any[]>([]);
 
@@ -40,8 +40,8 @@ const OwnerProperty = ({ image, location, price, area, bedrooms, description }: 
 
         <div className="w-1/2 pl-4 flex flex-col justify-between">
           <div>
-            <h3 className="text-xl text-gray-800 font-semibold">{location}</h3>
-            <p className="text-lg text-gray-600">{description}</p>
+            <h3 className="text-xl text-gray-800 font-semibold">{name}</h3>
+            <p className="text-lg text-gray-600">{location}</p>
           </div>
 
           <div className="mt-1">

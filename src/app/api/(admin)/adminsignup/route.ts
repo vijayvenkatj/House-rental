@@ -19,7 +19,7 @@ export async function POST(request: NextRequest){
     const token = jwt.sign({Name: OwnerDetails.Name}, JWT_SECRET);
     
 
-    const response = NextResponse.redirect(new URL('/', request.url),302);
+    const response = NextResponse.redirect(new URL('/owner', request.url),302);
     response.cookies.set("Owner", token, {  
         sameSite: "lax", 
         path: '/'
