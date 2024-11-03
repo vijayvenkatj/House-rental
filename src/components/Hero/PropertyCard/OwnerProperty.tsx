@@ -1,28 +1,38 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { fail } from "@/DBfunctions/Toasts";
 import Image from "next/image";
 
-const OwnerProperty = ({ name,image, location, price, area, bedrooms,}: any) => {
+const OwnerProperty = ({ name, image, location, price, area, bedrooms, propertyId }: any) => {
   const [showModal, setShowModal] = useState(false);
   const [buyerDetails, setBuyerDetails] = useState<any[]>([]);
+  const [reviews, setReviews] = useState<any[]>([]);
 
   const handleBuyerDetails = async () => {
     try {
+      fetchReviews();
       const res = await axios.get("/api/buyerdetails");
       if (res.data === "Authorization denied") {
         fail("Login first");
-      } 
-      else {
+      } else {
         const uniqueBuyers: any = Array.from(new Set(res.data.map((buyer: any) => buyer.phone_no)))
           .map(phoneNo => res.data.find((buyer: any) => buyer.phone_no === phoneNo));
-        
+
         setBuyerDetails(uniqueBuyers);
         setShowModal(true);
       }
     } catch (error) {
       fail("Error fetching buyer details");
       console.error(error);
+    }
+  };
+
+  const fetchReviews = async () => {
+    try {
+      const res = await axios.post("/api/getreview", { propertyId });
+      setReviews(res.data);
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
     }
   };
 
@@ -34,11 +44,11 @@ const OwnerProperty = ({ name,image, location, price, area, bedrooms,}: any) => 
   return (
     <div>
       <div className="bg-white rounded-lg flex p-4 mb-4 shadow-lg hover:shadow-xl transition-shadow duration-200">
-        <div className="w-1/2">
+        <div className="w-3/5">
           <Image src={image} alt="Property" width={800} height={500} className="rounded-lg w-full h-full object-cover" />
         </div>
 
-        <div className="w-1/2 pl-4 flex flex-col justify-between">
+        <div className="w-2/5 pl-4 flex flex-col justify-between">
           <div>
             <h3 className="text-xl text-gray-800 font-semibold">{name}</h3>
             <p className="text-lg text-gray-600">{location}</p>
@@ -61,7 +71,7 @@ const OwnerProperty = ({ name,image, location, price, area, bedrooms,}: any) => 
         </div>
       </div>
 
-      {/* Modal for displaying buyer details */}
+      {/* Modal for displaying buyer details and reviews */}
       {showModal && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-70 flex justify-center items-center z-50">
           <div className="bg-white rounded-lg shadow-lg p-8 w-11/12 md:w-1/3 relative transition-transform transform duration-300 ease-in-out">
@@ -87,6 +97,20 @@ const OwnerProperty = ({ name,image, location, price, area, bedrooms,}: any) => 
               </div>
             ) : (
               <p className="text-center text-gray-600">No buyer details available.</p>
+            )}
+
+            <h2 className="text-2xl font-bold mb-4 text-blue-700 text-center mt-6">User Reviews</h2>
+            {reviews.length > 0 ? (
+              <div>
+                {reviews.map((review, index) => (
+                  <div key={index} className="mb-4 border-b pb-4">
+                    <h3 className="text-md font-semibold text-gray-800">Rating: {review.rating} / 5</h3>
+                    <p className="text-md text-gray-600">{review.review_text}</p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-center text-gray-600">No reviews available for this property.</p>
             )}
           </div>
         </div>

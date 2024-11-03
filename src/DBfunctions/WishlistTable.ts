@@ -66,7 +66,32 @@ export async function AllWishlist(){
     }
 }
 
+export async function GetWishlistByName(name: string){
+    try{
+        const res = await pool.query(`
+            SELECT property_id FROM Wishlist join Buyer on Wishlist.buyer_id=Buyer.buyer_id WHERE Buyer.name = '${name}';
+        `);
+        return res.rows;
+    }
+    catch(error){
+        console.error('Error getting Wishlist:', error);
+        throw error;
+    }
+}
 
+export async function DeleteFromWishlist(buyer_id: number, property_id: number){
+    try{
+        console.log(buyer_id, property_id)
+        const res = await pool.query(`
+            DELETE FROM Wishlist WHERE Buyer_ID = ${buyer_id} AND Property_ID = ${property_id};
+        `);
+        return res;
+    }
+    catch(error){
+        console.error('Error deleting Wishlist:', error);
+        throw error;
+    }
+}
 
 interface Wishlist {
     buyer_id: number;

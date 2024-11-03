@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { FindOwner } from "@/DBfunctions/OwnerTable";
 import { FindOwnerId } from "@/DBfunctions/PropertyTable";
-import { FindUserId } from "@/DBfunctions/UserTable";
+import { FindUserById} from "@/DBfunctions/UserTable";
 
 const JWT_SECRET = process.env.JWT_SECRET || '';
 
@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
             const res: any = await FindOwnerId(wishlist.property_id);
             const wishlist_owner_id = res[0]?.owner_id; 
             if (wishlist_owner_id === owner_id) {
-                const buyer: User = await FindUserId(wishlist.buyer_id);
+                const buyer: User = await FindUserById(wishlist.buyer_id);
                 const buyer_contact: buyers = {
                     name: buyer.name,
                     phone_no: buyer.phone_no,

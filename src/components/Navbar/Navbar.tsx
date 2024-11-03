@@ -3,11 +3,13 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { FaBars as Menu, FaTimes as X, FaSearch } from "react-icons/fa";
 import axios from "axios";
+import { fail } from "@/DBfunctions/Toasts";
 
-const Navbar = () => {
+const Navbar = ({ properties = [], setFilteredProperties = () => {} }: any) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isloggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [buyer, setBuyer] = useState(true);
+  const [name, setName] = useState("");
 
   const toggleMenu = () => {
     setIsOpen((prev) => !prev);
@@ -19,22 +21,32 @@ const Navbar = () => {
     if (buyertoken || ownertoken) {
       setIsLoggedIn(true);
     }
-    if(window.location.href === "/owner"){
+    if (window.location.href.includes("/owner")) {
       setBuyer(false);
-    }
-    else{
+    } else {
       setBuyer(true);
     }
   }, []);
 
-  const handleLogout = async() => {
-    if(document.cookie.split("; ").find(row => row.startsWith("Buyer="))){
+  const handleLogout = async () => {
+    if (document.cookie.split("; ").find(row => row.startsWith("Buyer="))) {
       await axios.post("/api/logout");
-    }
-    else if(document.cookie.split("; ").find(row => row.startsWith("Owner="))){
-      await axios.post("/api/ownerlogout");
+    } else if (document.cookie.split("; ").find(row => row.startsWith("Owner="))) {
+      const res = await axios.post("/api/ownerlogout");
+      window.location.href = res.request.responseURL;
     }
     setIsLoggedIn(false);
+  };
+
+  const handleSearch = async() => {
+    if(window.location.href=="/" || window.location.href=="http://localhost:3000/"){
+    const filtered = await axios.post("/api/filtername", { name });
+    setFilteredProperties(filtered.data);
+    }
+    else{
+      console.log(window.location.href);
+      fail("Search is only available on the home page");
+    }
   };
 
   return (
@@ -58,11 +70,13 @@ const Navbar = () => {
               </div>
               <input
                 type="text"
-                placeholder="Add more"
+                placeholder="Search with Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 className="flex-grow bg-transparent text-gray-600 focus:outline-none"
               />
               <div className="border-l h-6 mx-2"></div>
-              <button className="p-2 bg-blue-100 text-blue-500 rounded-full hover:bg-blue-200">
+              <button onClick={handleSearch} className="p-2 bg-blue-100 text-blue-500 rounded-full hover:bg-blue-200">
                 <FaSearch />
               </button>
             </div>
@@ -70,29 +84,27 @@ const Navbar = () => {
 
           {/* Desktop Links */}
           <div className="hidden sm:flex sm:items-center sm:space-x-6">
-            { buyer ? (
+            {buyer ? (
               <Link href="/auth/owner">
-              <button className="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-gray-800 bg-gray-100 hover:bg-gray-200">
-                For Property Owners
-              </button>
-            </Link>
-            ):
-            (
-              <Link href="/auth">
-              <button className="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-gray-800 bg-gray-100 hover:bg-gray-200">
-                For Buyers
-              </button>
-            </Link>
-            )
-            }
-            
-            {isloggedIn ? (
-                <button
-                  onClick={handleLogout}
-                  className="px-4 py-2 ml-2 text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700"
-                >
-                  Logout
+                <button className="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-gray-800 bg-gray-100 hover:bg-gray-200">
+                  For Property Owners
                 </button>
+              </Link>
+            ) : (
+              <Link href="/auth">
+                <button className="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-gray-800 bg-gray-100 hover:bg-gray-200">
+                  For Buyers
+                </button>
+              </Link>
+            )}
+
+            {isLoggedIn ? (
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 ml-2 text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700"
+              >
+                Logout
+              </button>
             ) : (
               <Link href="/auth">
                 <button className="px-4 py-2 ml-2 text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700">
@@ -122,7 +134,7 @@ const Navbar = () => {
             placeholder="Search for rentals..."
             className="px-4 py-2 w-full border rounded-md focus:outline-none focus:border-blue-500 mb-3"
           />
-          {isloggedIn ? (
+          {isLoggedIn ? (
             <>
               <Link href="/dashboard" className="block px-3 py-2 rounded-md text-base font-medium text-gray-200 hover:bg-gray-400">
                 Dashboard

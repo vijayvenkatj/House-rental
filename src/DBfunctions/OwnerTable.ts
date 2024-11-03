@@ -48,6 +48,18 @@ export async function FindOwner(Name: string) {
     }
 }
 
+export async function FindOwnerByImage(image: string) {
+    try {
+        const res = await pool.query(`SELECT name,phone_no FROM Owner join Property on property.owner_id = Owner.owner_id where property.image='${image}'`);
+        console.log(res.rows[0]);
+        return res.rows[0];
+    }
+    catch (error) {
+        console.error('Error finding owner by image:', error);
+        throw error;
+    }
+}
+
 export async function VerifyOwner(Name: string, Password: string) {
     try {
         const owner = await FindOwner(Name);

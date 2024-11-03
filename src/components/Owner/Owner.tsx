@@ -31,6 +31,7 @@ const OwnerDashboard = () => {
         description: '',
         image: '',
       });
+      window.location.reload();
     } catch (error) {
       console.error("Error adding property:", error);
     }
@@ -51,7 +52,7 @@ const OwnerDashboard = () => {
   return (
     <div className="flex w-full h-screen p-4 bg-[#005ca8]">
       {/* Left section: Add Property form */}
-      <div className="w-2/5 bg-gray-100 text-gray-700 py-3 px-6 rounded-xl">
+      <div className="w-2/7 bg-gray-100 text-gray-700 py-3 px-6 rounded-xl">
         <h2 className="text-gray-700 text-2xl font-bold mt-10 mb-10 text-center">Add Property</h2>
         <form onSubmit={handleAddProperty} className="space-y-4">
           <div>
@@ -144,9 +145,8 @@ const OwnerDashboard = () => {
       </div>
 
       {/* Right section: List of properties */}
-      <div className="w-3/5 pl-6">
-        <h2 className="text-white text-2xl font-bold mb-4">Listed Properties</h2>
-        <div className="overflow-y-auto max-h-[calc(100vh-2rem)] pr-4">
+      <div className="w-5/7 pl-6">
+        <div className="overflow-y-auto max-h-[90vh] pr-4">
           {properties.length === 0 ? (
             <p>No properties listed yet.</p>
           ) : (
@@ -158,6 +158,7 @@ const OwnerDashboard = () => {
                 location={property.address}
                 price={property.rent}
                 area={property.area}
+                propertyId={property.property_id}
                 bedrooms={property.bedrooms}
               />
             ))

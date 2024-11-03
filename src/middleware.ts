@@ -42,8 +42,19 @@ export async function middleware(request: NextRequest) {
     }
     return NextResponse.redirect(new URL('/auth', request.url), 302);
   }
+
+  if(request.nextUrl.pathname.startsWith('/auth/owner')) {
+    if(admin) {
+      return NextResponse.redirect(new URL('/owner', request.url), 302);
+    }
+  }
+
+  if(request.nextUrl.pathname.startsWith('/adminlogout')) {
+    return NextResponse.redirect(new URL('/', request.url), 302);
+  }
+
 }
 
 export const config = {
-  matcher: ['/owner','/dashboard'],
+  matcher: ['/owner','/dashboard','/auth/owner','/adminlogout'],
 };

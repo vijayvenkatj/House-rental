@@ -48,11 +48,23 @@ export async function FindUser(Name: string) {
         throw error;
     }
 }
-export async function FindUserId(Buyer_ID: number) {
+
+export async function FindUserById(Buyer_ID: number) {
     try {
         const res = await pool.query(`SELECT * FROM Buyer WHERE Buyer_ID = $1`, [Buyer_ID])
         return res.rows[0];
     } catch (error) {
+        console.error('Error finding user:', error);
+        throw error;
+    }
+}
+
+export async function FindUserId(Name: string) {
+    try {
+        const res = await pool.query(`SELECT Buyer_ID FROM Buyer WHERE Name = $1`, [Name])
+        return res.rows[0];
+    }
+    catch (error) {
         console.error('Error finding user:', error);
         throw error;
     }
