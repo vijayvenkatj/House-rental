@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { fail } from "@/DBfunctions/Toasts";
 import Image from "next/image";
 

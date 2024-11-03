@@ -24,7 +24,7 @@ export async function CreateReviewTable() {
     }
 }
 
-export async function AddReview(rating: Number, review_text: string, property_id: Number, buyer_id: Number) {
+export async function AddReview(rating: number, review_text: string, property_id: number, buyer_id: number) {
     try {
         const res = await pool.query(`
             INSERT INTO Reviews (property_id, buyer_id, rating, review_text)

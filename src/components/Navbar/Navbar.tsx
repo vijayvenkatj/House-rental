@@ -10,7 +10,7 @@ const Navbar = ({ properties = [], setFilteredProperties = () => {} }: any) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [buyer, setBuyer] = useState(true);
   const [name, setName] = useState("");
-
+  console.log(properties);
   const toggleMenu = () => {
     setIsOpen((prev) => !prev);
   };

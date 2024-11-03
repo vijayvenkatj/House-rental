@@ -19,7 +19,7 @@ const FilterCard = ({ properties, setFilteredProperties }: FilterCardProps) => {
   const [location, setLocation] = useState("");
   const [area, setArea] = useState(0);
   const [bedrooms, setBedrooms] = useState(0);
-
+  console.log(properties)
   const handleApply = async () => {
 
     const filtered = await axios.post("/api/filteredproperty", {

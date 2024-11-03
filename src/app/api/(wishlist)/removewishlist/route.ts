@@ -1,8 +1,8 @@
-import { CreateWishlistTable,DeleteFromWishlist,GetWishlistByName } from "@/DBfunctions/WishlistTable";
+import { CreateWishlistTable,DeleteFromWishlist } from "@/DBfunctions/WishlistTable";
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { FindProperty } from "@/DBfunctions/PropertyTable";
-import { FindUserById, FindUserId } from "@/DBfunctions/UserTable";
+import { FindUserId } from "@/DBfunctions/UserTable";
 
 const JWT_SECRET = process.env.JWT_SECRET || '';
 

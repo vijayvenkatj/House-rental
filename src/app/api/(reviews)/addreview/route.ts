@@ -47,6 +47,6 @@ export async function POST(request: NextRequest){
     }
 
     catch(error){
-        return NextResponse.json("Failed to add review");
+        return NextResponse.json(error);
     }
 }

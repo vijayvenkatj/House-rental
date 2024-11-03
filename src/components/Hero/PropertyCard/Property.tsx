@@ -38,6 +38,7 @@ const Property = ({ name, image, location, price, area, bedrooms }: any) => {
         }
       } catch (error) {
         fail("Failed to add review");
+        console.log(error);
       }
     } else {
       fail("Please provide both a rating and a review");

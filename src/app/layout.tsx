@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import {Inter} from "next/font/google"
-import Navbar from "@/components/Navbar/Navbar";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
 
@@ -16,7 +15,6 @@ export default function RootLayout({children,}: Readonly<{children: React.ReactN
   return (
     <html lang="en">
       <body className={inter.className}>
-
         {children}
         <Toaster position="bottom-right" />
       </body>
